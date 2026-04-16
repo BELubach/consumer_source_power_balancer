@@ -1,4 +1,4 @@
-# Demo project 
+# Power balancer full stack app
 
 ## Stack 
 - fronted: Angular 21
