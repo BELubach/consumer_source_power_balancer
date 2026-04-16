@@ -25,6 +25,4 @@ export class DashboardComponent implements OnInit {
     this.store.loadConsumers();
   }
 
-
-
 }
