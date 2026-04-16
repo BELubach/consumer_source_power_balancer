@@ -36,6 +36,7 @@ class ConsumerPowerRequirement(Base):
     consumer_id: Mapped[int] = mapped_column(Integer, ForeignKey("consumers.id"), nullable=False)
     source_id: Mapped[int] = mapped_column(Integer, ForeignKey("sources.id"), nullable=False)
     capacity: Mapped[int] = mapped_column(Integer, nullable=False)
+    is_active: Mapped[bool] = mapped_column(default=True) 
     
     consumer: Mapped["Consumer"] = relationship(back_populates="power_requirements")
     source: Mapped["Source"] = relationship(back_populates="power_requirements")
