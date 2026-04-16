@@ -1,0 +1,10 @@
+# Force LF for shell scripts so they don't break in Docker/Linux
+*.sh text eol=lf
+
+# Force LF for other configuration files
+*.env text eol=lf
+docker-compose.yml text eol=lf
+Dockerfile text eol=lf
+
+# Let Git handle other files (like python or js) automatically
+* text=auto
