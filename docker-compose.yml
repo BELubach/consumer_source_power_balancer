@@ -1,0 +1,83 @@
+services:
+  angular-app:
+    image: nginx:alpine
+    container_name: angular-nginx
+    ports:
+      - "4200:80"
+    volumes:
+      - ./angular_frontend/dist/powergrid/browser:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    networks:
+      - powergrid-network
+
+  fastapi-app:
+    build: 
+      context: ./fastapi_backend
+      dockerfile: Dockerfile
+    container_name: fastapi_app
+    ports:
+      - "8100:8100"
+    volumes:
+      - ./fastapi_backend:/app
+    depends_on:
+      - powergrid_db_container
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    networks:
+      - powergrid-network
+    env_file:
+      - ./fastapi_backend/.env 
+    environment:
+      # Overrides from .env for database connection, .env is used locally for connecting to localhost
+      - POSTGRES_HOST=powergrid_db_container
+      - POSTGRES_PORT=5432
+
+
+  powergrid_db_container:
+    image: postgres:16
+    container_name: powergrid_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER:-db-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-some_secret_password}
+      POSTGRES_DB: ${POSTGRES_DB:-powergrid_db}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - powergrid_data:/var/lib/postgresql/data
+      - ./fastapi_backend/database/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ADMIN_USER:-db-admin} -d ${POSTGRES_DB:-powergrid_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    networks:
+      - powergrid-network
+    env_file:
+      - ./fastapi_backend/.env
+
+volumes:
+  powergrid_data:
+    driver: local
+
+networks:
+  powergrid-network:
+    driver: bridge
+
+ 

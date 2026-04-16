@@ -1,0 +1,89 @@
+{
+  "consumers": [
+    {
+      "name": "Hospital Complex",
+      "priority": 1,
+      "requiredPower": [
+        {
+          "sourceId": "1",
+          "capacity": 100
+        },
+        {
+          "sourceId": "4",
+          "capacity": 100
+        }
+      ]
+    },
+    {
+      "name": "Data Center",
+      "priority": 2,
+      "requiredPower": [
+        {
+          "sourceId": "2",
+          "capacity": 150
+        },
+        {
+          "sourceId": "5",
+          "capacity": 100
+        }
+      ]
+    },
+    {
+      "name": "Manufacturing Plant",
+      "priority": 3,
+      "requiredPower": [
+        {
+          "sourceId": "3",
+          "capacity": 200
+        },
+        {
+          "sourceId": "4",
+          "capacity": 150
+        }
+      ]
+    },
+    {
+      "name": "Residential District",
+      "priority": 2,
+      "requiredPower": [
+        {
+          "sourceId": "1",
+          "capacity": 80
+        },
+        {
+          "sourceId": "6",
+          "capacity": 50
+        }
+      ]
+    },
+    {
+      "name": "Shopping Mall",
+      "priority": 4,
+      "requiredPower": [
+        {
+          "sourceId": "2",
+          "capacity": 50
+        },
+        {
+          "sourceId": "5",
+          "capacity": 75
+        }
+      ]
+    },
+    {
+      "name": "Train Station",
+      "priority": 1,
+      "requiredPower": [
+        {
+          "sourceId": "3",
+          "capacity": 100
+        },
+        {
+          "sourceId": "6",
+          "capacity": 50
+        }
+      ]
+    }
+  ]
+}
+

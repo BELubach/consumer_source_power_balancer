@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "id": "1",
+      "name": "Solar Farm Alpha",
+      "capacity": 150
+    },
+    {
+      "id": "2",
+      "name": "Wind Turbine Park Beta",
+      "capacity": 200
+    },
+    {
+      "id": "3",
+      "name": "Hydroelectric Plant Gamma",
+      "capacity": 300
+    },
+    {
+      "id": "4",
+      "name": "Nuclear Reactor Delta",
+      "capacity": 500
+    },
+    {
+      "id": "5",
+      "name": "Gas Turbine Epsilon",
+      "capacity": 250
+    },
+    {
+      "id": "6",
+      "name": "Battery Storage Zeta",
+      "capacity": 100
+    }
+  ]
+}
+
