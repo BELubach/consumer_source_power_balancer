@@ -1,0 +1,35 @@
+services:
+
+  powergrid_db_container:
+    image: postgres:16
+    container_name: powergrid_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER:-db-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-some_secret_password}
+      POSTGRES_DB: ${POSTGRES_DB:-powergrid_db}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - powergrid_data:/var/lib/postgresql/data
+      - ./database/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ADMIN_USER:-db-admin} -d ${POSTGRES_DB:-powergrid_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    env_file:
+      - .env
+
+volumes:
+  powergrid_data:
+    driver: local
+
+
+ 
