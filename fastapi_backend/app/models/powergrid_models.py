@@ -12,7 +12,10 @@ class Consumer(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     priority: Mapped[int] = mapped_column(Integer, nullable=False)
-
+    power_requirements: Mapped[list["ConsumerPowerRequirement"]] = relationship(
+        back_populates="consumer",
+    )
+    
     def __repr__(self):
         return f"<Consumer(id={self.id}, name={self.name}, priority={self.priority})>"
     
@@ -24,7 +27,10 @@ class Source(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     capacity: Mapped[int] = mapped_column(Integer, nullable=False)
-   
+    power_requirements: Mapped[list["ConsumerPowerRequirement"]] = relationship(
+            back_populates="source",
+    )
+
     def __repr__(self):
         return f"<Source(id={self.id}, name={self.name}, capacity={self.capacity})>"
 
@@ -37,7 +43,7 @@ class ConsumerPowerRequirement(Base):
     source_id: Mapped[int] = mapped_column(Integer, ForeignKey("sources.id"), nullable=False)
     capacity: Mapped[int] = mapped_column(Integer, nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True) 
-    
+
     consumer: Mapped["Consumer"] = relationship(back_populates="power_requirements")
     source: Mapped["Source"] = relationship(back_populates="power_requirements")
 
