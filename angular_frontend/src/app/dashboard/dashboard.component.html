@@ -1,0 +1,38 @@
+<div class="min-h-screen px-4 py-6 text-stone-900 sm:px-6 lg:px-8">
+  <div class="mx-auto flex flex-col gap-6">
+    <section class="grid gap-6 rounded-[24px] bg-algreen h-36 items-center justify-center">
+      <div class="flex flex-col gap-4">
+        <div class="space-y-3 ">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl text-white text-center">Power allocation overview</h1>
+        </div>
+      </div>
+    </section>
+
+    <div>
+      <button 
+      [class]="'rounded-full px-4 py-2 text-sm font-semibold hover:cursor-pointer ' 
+            + (tabToShow() === 'consumers' 
+            ? 'bg-algreen hover:bg-algreen/90 text-white' 
+            : 'bg-white hover:text-white hover:bg-algreen text-algreen border border-algreen ')"
+        (click)="tabToShow.set(tabToShow() === 'consumers' ? null : 'consumers')">
+        Consumers
+      </button>
+
+      <button 
+       [class]="'rounded-full px-4 py-2 text-sm font-semibold hover:cursor-pointer ' 
+            + (tabToShow() === 'sources' 
+            ? 'bg-algreen hover:bg-algreen/90 text-white' 
+            : 'bg-white hover:text-white hover:bg-algreen text-algreen border border-algreen ')"
+        (click)="tabToShow.set(tabToShow() === 'sources' ? null : 'sources')">
+        Sources
+      </button>
+    </div>
+
+    @if(tabToShow() === 'consumers') {
+      <app-consumers></app-consumers>
+    }
+    @if(tabToShow() === 'sources') {
+      <app-sources ></app-sources>
+    }
+  </div>
+</div>
