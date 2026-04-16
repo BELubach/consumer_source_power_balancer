@@ -1,0 +1,56 @@
+<section class="grid gap-6 rounded-[24px]">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+
+        <div class="space-y-2">
+            <p class="text-2xl font-bold ">Consumers</p>
+        </div>
+    </div>
+
+    <app-barchartcomponent [chartData]="chartData()"></app-barchartcomponent>
+
+    <div class="">
+        <table class="table w-full">
+            <thead>
+                <tr class="text-left text-sm font-semibold text-gray-500">
+                    <th>Consumer</th>
+                    <th>Priority</th>
+                    <th>Active power</th>
+                    <th>Active</th>
+                    <th>Required Power</th>
+                </tr>
+            </thead>
+            <tbody class="border-t border-gray-200">
+                @for (consumer of consumers(); track consumer.id) {
+                <tr class="border-t border-gray-200">
+                    <td>
+                        <h3 class="font-semibold text-[#450812]">{{ consumer.name }}</h3>
+                    </td>
+                    <td>
+                        <span class="rounded-full bg-alred/20 px-3 py-1 text-sm font-bold text-alred">
+                            {{ consumer.priority }}</span>
+                    <td>
+                            {{ consumer.active_power }} MW
+                    </td>
+                    <td>
+                        <p-checkbox [inputId]="consumer.id.toString()" name="sources" [binary]="true"
+                            [ngModel]="isConsumerActive(consumer)"
+                            (onChange)="onConsumerToggle(consumer, $event.checked)" />
+                        <label [for]="consumer.id.toString()">{{ consumer.name }}</label>
+                    </td>
+                    <td>
+                        @for (requirement of getRequiredPower(consumer); track requirement.source_id + '-' + $index)
+                        {
+                        <div class="flex gap-2 items-center mb-2">
+                            <span class="rounded-full bg-alred/10 px-3 py-1 text-sm font-bold text-alred">
+                                {{ requirement.capacity }} MW from source {{ requirement.source_id }}</span>
+                        </div>
+                        }
+                    </td>
+                </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+
+</section>
