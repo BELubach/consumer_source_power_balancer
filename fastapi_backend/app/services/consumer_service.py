@@ -4,7 +4,7 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.core.exceptions import ResourceNotFoundException
 from app.models import Consumer, ConsumerPowerRequirement
-
+from app.schemas.consumers import ConsumerResponse, RequiredPowerBase
 
 async def get_consumers(db: AsyncSession, priority_gte: int = 1) -> Sequence[Consumer]:
     """Get all consumers including its power requirements"""
@@ -77,4 +77,34 @@ async def _update_power_requirement(db: AsyncSession, required_power_obj: Consum
     await db.flush()
     await db.refresh(required_power_obj)
     return required_power_obj
+
+
+
+
+async def map_consumer_to_response(consumer: Consumer, include_power_details: bool = True) -> ConsumerResponse:
+    """Map Consumer model to ConsumerResponse schema"""
+
+    active_power=sum(pr.capacity for pr in consumer.power_requirements if pr.is_active)
+
+    if include_power_details:
+        return ConsumerResponse(
+            id=consumer.id,
+            name=consumer.name,
+            priority=consumer.priority,
+            required_power=[RequiredPowerBase(
+                consumer_id=pr.consumer_id,
+                source_id=pr.source_id,
+                capacity=pr.capacity,
+                is_active=pr.is_active
+            ) for pr in consumer.power_requirements],
+            active_power=active_power
+        )
+    else:
+        return ConsumerResponse(
+            id=consumer.id,
+            name=consumer.name,
+            priority=consumer.priority,
+            active_power=active_power
+        )
+
 
