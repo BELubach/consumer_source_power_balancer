@@ -28,3 +28,18 @@ class Source(Base):
     def __repr__(self):
         return f"<Source(id={self.id}, name={self.name}, capacity={self.capacity})>"
 
+class ConsumerPowerRequirement(Base):
+    """ConsumerPowerRequirements model linking Consumer and Source with required power"""
+    __tablename__ = "required_power"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    consumer_id: Mapped[int] = mapped_column(Integer, ForeignKey("consumers.id"), nullable=False)
+    source_id: Mapped[int] = mapped_column(Integer, ForeignKey("sources.id"), nullable=False)
+    capacity: Mapped[int] = mapped_column(Integer, nullable=False)
+    
+    consumer: Mapped["Consumer"] = relationship(back_populates="power_requirements")
+    source: Mapped["Source"] = relationship(back_populates="power_requirements")
+
+    def __repr__(self):
+        return f"<ConsumerPowerRequirements(id={self.id}, consumer_id={self.consumer_id}, source_id={self.source_id}, capacity={self.capacity})>"
+
