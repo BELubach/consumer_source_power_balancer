@@ -39,8 +39,8 @@ services:
       - ./fastapi_backend/.env 
     environment:
       # Overrides from .env for database connection, .env is used locally for connecting to localhost
-      - POSTGRES_HOST=powergrid_db_container
-      - POSTGRES_PORT=5432
+      - APP_DB_HOST=powergrid_db_container
+      - APP_DB_PORT=5432
 
 
   powergrid_db_container:
